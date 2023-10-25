@@ -4,6 +4,7 @@ Official PyTorch implementation of "**Domain Generalization with Vital Phase Aug
 Implemantation steps 
 1. unzip the zip file
 2. [parameters] example
+
 --model
 resnet18
 --dataset
@@ -22,3 +23,6 @@ datasets>VIP.py
 fractal_path = '/opt/project/fractals_and_fvis_onlycolor/fractals/images_32_new/'
 
 4. docker 
+
+excitedkid /vipaug
+
