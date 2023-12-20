@@ -218,7 +218,7 @@ class VIPAug(object):
                 for j in range(len(absolute[:, :, p]) // kernel):
                     number_list = []
                     # modification related to low frequency region
-                    if (i<4 and j<4) or (i>12 and j>12) or (i<4 and j>12) or (i>12 and j<4):
+                    if (i<13 and j<13) or (i>42 and j>42) or (i<13 and j>42) or (i>42 and j<13):
                         for k2 in range(kernel):
                             for k1 in range(kernel):
                                 number_list.append(absolute[:, :, p][kernel * i + k2, kernel * j + k1])
