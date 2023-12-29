@@ -68,6 +68,6 @@ You can download pretrained models.
       title={Domain Generalization with Vital Phase Augmentation}, 
       author={Ingyun Lee and Wooju Lee and Hyun Myung},
       journal={AAAI},
-      year={2024},
+      year={2024}
 }
 ```
