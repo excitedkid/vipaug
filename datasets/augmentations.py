@@ -17,7 +17,7 @@
 import numpy as np
 from PIL import Image, ImageOps, ImageEnhance
 
-IMAGE_SIZE = 32
+IMAGE_SIZE = 0
 
 
 def int_parameter(level, maxval):

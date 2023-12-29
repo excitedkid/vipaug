@@ -46,9 +46,9 @@ class CIFARC(CIFAR10):
 
 
 class CIFAR10D(object):
-    def __init__(self,  kernel, variation, dataroot='', dataroot_c='', num_workers=4, batch_size=128, _transforms='', _eval='none'):
+    def __init__(self,  kernel, vital, nonvital, dataroot='', dataroot_c='', num_workers=4, batch_size=128, _transforms='', _eval='none', fractal_images=''):
         dataset_name = 'cifar10'
-        transforms_list = train_transforms(_transforms, kernel, variation, dataset_name)
+        transforms_list = train_transforms(_transforms, kernel, vital, nonvital, dataset_name, fractal_images)
         train_transform = transforms.Compose(transforms_list)
         test_transform = test_transforms()
 
@@ -90,9 +90,9 @@ class CIFAR10D(object):
 
 
 class CIFAR100D(object):
-    def __init__(self, kernel, variation, dataroot='', dataroot_c='', num_workers=4, batch_size=128, _transforms='', _eval='none'):
+    def __init__(self, kernel, vital, nonvital, dataroot='', dataroot_c='', num_workers=4, batch_size=128, _transforms='', _eval='none', fractal_images=''):
         dataset_name = 'cifar100'
-        transforms_list = train_transforms(_transforms, kernel, variation, dataset_name)
+        transforms_list = train_transforms(_transforms, kernel, vital, nonvital, dataset_name, fractal_images)
         train_transform = transforms.Compose(transforms_list)
         test_transform = test_transforms()
 

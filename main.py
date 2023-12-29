@@ -23,12 +23,11 @@ parser = argparse.ArgumentParser()
 parser.add_argument('--data', type=str, default='/ws/data') #set your owns
 parser.add_argument('--data-c', type=str, default='/ws/data_c') #set your owns
 parser.add_argument('-d', '--dataset', type=str, default='cifar10') #set your owns
-
-parser.add_argument('--workers', default=8, type=int, help="number of data loading workers")
+parser.add_argument('--fractal_path', type=str, default='./fractals/images_32/') #change 'images_32' to 'images_224' in ImageNet
 parser.add_argument('--outfolder', type=str, default='./results')
 
 # optimization
-parser.add_argument('--batch-size', type=int, default=128)
+parser.add_argument('--batch-size', type=int, default=128) #cifar: 128, imagenet: 32
 parser.add_argument('--lr', type=float, default=0.1, help="learning rate for model")
 parser.add_argument('--max-epoch', type=int, default=250)
 parser.add_argument('--aug', type=str, default='none', help='none, vipaug')
@@ -40,16 +39,16 @@ parser.add_argument('--model', type=str, default='resnet18')
 parser.add_argument('--eval', type=str, default='none', help='none, eval')
 
 # etc.
-parser.add_argument('--gpu', type=str, default='0')  #set your owns
-
+parser.add_argument('--workers', default=16, type=int, help="number of data loading workers")
+parser.add_argument('--gpu', type=str, default='0')  #set your own gpu
 parser.add_argument('--eval-freq', type=int, default=10)
 parser.add_argument('--print-freq', type=int, default=100)
 parser.add_argument('--memo', type=str, default='none')
 
 #vipaug parameter
 parser.add_argument('--kernel', type=int, default=2) #set the argument depending on datasets
-parser.add_argument('--variation', type=float, default=0.012) #set the argument depending on datasets
-
+parser.add_argument('--nonvital', type=float, default=0.014) #set the argument depending on datasets cifar10: 0.014, cifar100: 0.012, imagenet:  0.005
+parser.add_argument('--vital', type=float, default=0.001)  #set the argument depending on datasets cifar10: 0.001, cifar100: 0.005, imagenet:  0.001
 
 args = parser.parse_args()
 options = vars(args)
@@ -74,9 +73,9 @@ def main():
         return
 
     if 'cifar10' == options['dataset']:
-        Data = CIFAR10D(kernel=2, variation=options['variation'], dataroot=options['data'], dataroot_c=options['data_c'], num_workers=options['workers'], batch_size=options['batch_size'], _transforms=options['aug'], _eval=options['eval'])
+        Data = CIFAR10D(kernel=2, vital=options['vital'], nonvital=options['nonvital'], dataroot=options['data'], dataroot_c=options['data_c'], num_workers=options['workers'], batch_size=options['batch_size'], _transforms=options['aug'], _eval=options['eval'], fractal_images=options['fractal_path'])
     else:
-        Data = CIFAR100D(kernel=2, variation=options['variation'], dataroot=options['data'], dataroot_c=options['data_c'], num_workers=options['workers'], batch_size=options['batch_size'], _transforms=options['aug'], _eval=options['eval'])
+        Data = CIFAR100D(kernel=2, vital=options['vital'], nonvital=options['nonvital'], dataroot=options['data'], dataroot_c=options['data_c'], num_workers=options['workers'], batch_size=options['batch_size'], _transforms=options['aug'], _eval=options['eval'], fractal_images=options['fractal_path'])
 
     trainloader, testloader = Data.train_loader, Data.test_loader
     normalize = Data.normalize
@@ -89,7 +88,7 @@ def main():
     criterion = nn.CrossEntropyLoss().cuda()
     net = torch.nn.DataParallel(net).cuda()
 
-    file_name = f"{options['model']}_gpu{options['gpu']}_{options['dataset']}_{options['aug']}_batch{options['batch_size']}_var{options['variation']}_{options['memo']}" #set your owns
+    file_name = f"{options['model']}_gpu{options['gpu']}_{options['dataset']}_{options['aug']}_batch{options['batch_size']}_var{options['vital']}_var{options['nonvital']}_{options['memo']}" #set your owns
     if options['eval'] == 'eval':
         net, criterion = load_networks(net, options['outfolder'], file_name, criterion=criterion)
         results = test(net, testloader, normalize)
@@ -126,7 +125,7 @@ def main():
         print("epoch_loss:", epoch_loss)
         if epoch > 150:
             print("==> Test")
-            results = test(net, testloader, normalize, **options)
+            results = test(net, testloader, normalize)
             print("accuracy:", results)
             if best_acc < results:
                 best_acc = results
