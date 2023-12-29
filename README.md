@@ -9,12 +9,13 @@ Accepted by AAAI-24
 git clone https://github.com/excitedkid/vipaug.git
 
 #Prepare fractal iamges
+Make a new directory "fractals"  
 Unzip the zip file of fractal images in ./fractals  
 
 #Build environment by docker 
 docker pull excitedkid/vipaug:0
 
-#Dataset folder
+#Structure of dataset directory
 CIFAR-10
 {dataset path}/cifar10/cifar-10-batches-py ...
 {dataset path}/CIFAR-10-C ...
@@ -26,7 +27,7 @@ CIFAR-100
 ImageNet
 {dataset path}/train ...
 ```
-You can download fractal images [here](https://drive.google.com/drive/folders/18mSODlMZC9ZyTKMxRIslM_1_3FqtSmlx?usp=drive_link).
+**You can download fractal images [here](https://drive.google.com/drive/folders/18mSODlMZC9ZyTKMxRIslM_1_3FqtSmlx?usp=drive_link).**
 
 Fractal images are from *DeviantArt*.
 
